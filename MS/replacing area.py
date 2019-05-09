@@ -1,6 +1,8 @@
 
 # coding: utf-8
 
+# The script would read "source_file" as source of "Area" and replace all "Area" in "to_replace" at corresponding "First Scan" values. The output filename and path are defined at "output".
+
 # In[1]:
 
 
@@ -11,35 +13,27 @@ import pandas as pd
 
 
 source_file = r"C:\Users\localadmin\Downloads\20190418_17_Schulz_Ruby_IgG_mz600_ETH1_MSnSpectrumInfo.xlsx"
-
-
-# In[3]:
-
-
 to_replace = r"C:\Users\localadmin\Downloads\ETH1.xlsx"
-
-
-# In[4]:
-
-
 output = r"C:\Users\localadmin\Downloads\ETH1_updated.xlsx"
 
 
-# In[5]:
+# In[3]:
 
 
 source_df = pd.read_excel(source_file, index_col=15)
 to_replace_df = pd.read_excel(to_replace)
 
 
-# In[6]:
+# Iterate through "to_replace_df" and replace "Area" with value at the corresponding "First Scan" from "source_file"
+
+# In[4]:
 
 
 for i, r in to_replace_df.iterrows():
     to_replace_df.at[i, "Area"] = source_df.loc[r["First Scan"]]["Area"]
 
 
-# In[7]:
+# In[5]:
 
 
 to_replace_df.to_excel(output, index=False)
