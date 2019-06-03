@@ -44,16 +44,16 @@ for ind, row in fdr_df.iterrows():
             current_row = FDRRow(row["Protein"], row["Peptide"], row["Precursor Charge"], row[fdr_df.columns[i]])
             if current_row.check_threshold(fdr_threshold):
                 # i-5 is the column number of the current sample
-                if peptide_df.columns[i - 5] in temp_protein_dict:
+                if peptide_df.columns[i - 5] not in temp_protein_dict:
                     temp_protein_dict[peptide_df.columns[i - 5]] = {}
                 if row["Protein"] not in temp_protein_dict[peptide_df.columns[i - 5]]:
-                    temp_protein_dict[peptide_df.columns[i - 5]][row["Proteins"]] = 0
+                    temp_protein_dict[peptide_df.columns[i - 5]][row["Protein"]] = 0
                 # Add value from the protein sample to the value of the value of the same protein in the same sample
-                temp_protein_dict[peptide_df.columns[i - 5]][row["Proteins"]] += peptide_df.at[
+                temp_protein_dict[peptide_df.columns[i - 5]][row["Protein"]] += peptide_df.at[
                     (current_row.protein, current_row.peptide, current_row.charge), peptide_df.columns[i - 5]]
 
 # Create dataframe from the sample
 proteins = pd.DataFrame(temp_protein_dict)
 
 # Write out new protein file
-proteins.to_csv(output_protein_filename, sep="\t", index=False)
+proteins.to_csv(output_protein_filename, sep="\t", index_label="Protein")
