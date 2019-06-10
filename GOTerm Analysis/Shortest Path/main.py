@@ -13,7 +13,8 @@ if __name__ == "__main__":
 
     common, data, lowest_depth = g_map.get_shortest_path(ids, pathway)
     data.to_csv("test.csv", index=False)
-    print(common)
+    print("Closest common GOTerm:{} at depth{}".format(common, lowest_depth))
+
 
 
 

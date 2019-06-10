@@ -54,6 +54,14 @@ def get_go_info(obo, object_dict):
                 if s.group(1) not in object_dict[go_term.ns]:
                     object_dict[go_term.ns][s.group(1)] = GOTerm(id=s.group(1))
                 object_dict[go_term.ns][s.group(1)].children.append(go_term.id)
+        elif line.startswith("relationships:"):
+            if line[14:].startswith("part_of"):
+                s = is_a_pattern.search(line)
+                if s:
+                    go_term.parents.append(s.group(1))
+                    if s.group(1) not in object_dict[go_term.ns]:
+                        object_dict[go_term.ns][s.group(1)] = GOTerm(id=s.group(1))
+                    object_dict[go_term.ns][s.group(1)].children.append(go_term.id)
         elif line == "":
             if go_term.id not in object_dict[go_term.ns]:
                 object_dict[go_term.ns][go_term.id] = go_term
