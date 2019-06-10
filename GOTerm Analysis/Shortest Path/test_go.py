@@ -15,6 +15,8 @@ class TestGoMapMethods(unittest.TestCase):
         id = "GO:0000011"
         g = g_map.get_go_term(id, "biological_process")
         self.assertEqual(g.id, id)
+        g = g_map.get_go_term("GO:0000084", "biological_process")
+        self.assertEqual(2, len(g.parents))
 
     def test_getting_all_parents(self):
         g_map = GOMap()
