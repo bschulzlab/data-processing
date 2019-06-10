@@ -90,10 +90,11 @@ class GOMap:
             for path, depth in self.get_go_term(i, pathway).get_all_parents(self, pathway):
                 path_count += 1
                 if depth > lowest_depth:
-                    lowest_depth = depth
+                    lowest_depth = depth + 1
                 row = {"query": i, "path_number": path_count}
                 for r in range(0, depth+1, 1):
                     row[r] = path[depth - r]
+                row[depth+1] = i
                 results.append(row)
 
         return pd.DataFrame(results), lowest_depth
