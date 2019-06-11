@@ -53,7 +53,7 @@ for ind, row in fdr_df.iterrows():
                     (current_row.protein, current_row.peptide, current_row.charge), peptide_df.columns[i - 5]]
 
 # Create dataframe from the sample
-proteins = pd.DataFrame(temp_protein_dict)
+proteins = pd.DataFrame(temp_protein_dict, columns=peptide_df.columns[2:])
 
 # Write out new protein file
 proteins.to_csv(output_protein_filename, sep="\t", index_label="Protein")
