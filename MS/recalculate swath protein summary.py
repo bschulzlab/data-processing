@@ -49,11 +49,14 @@ for ind, row in fdr_df.iterrows():
                 if row["Protein"] not in temp_protein_dict[peptide_df.columns[i - 5]]:
                     temp_protein_dict[peptide_df.columns[i - 5]][row["Protein"]] = 0
                 # Add value from the protein sample to the value of the value of the same protein in the same sample
-                temp_protein_dict[peptide_df.columns[i - 5]][row["Protein"]] += peptide_df.at[
-                    (current_row.protein, current_row.peptide, current_row.charge), peptide_df.columns[i - 5]]
+                if (current_row.protein, current_row.peptide, current_row.charge) in peptide_df.index:
+                    temp_protein_dict[peptide_df.columns[i - 5]][row["Protein"]] += peptide_df.at[
+                        (current_row.protein, current_row.peptide, current_row.charge), peptide_df.columns[i - 5]]
+                else:
+                    print((current_row.protein, current_row.peptide, current_row.charge), "does not exist in peptide file")
 
 # Create dataframe from the sample
-proteins = pd.DataFrame(temp_protein_dict, columns=peptide_df.columns[2:])
+proteins = pd.DataFrame(temp_protein_dict)
 
 # Write out new protein file
 proteins.to_csv(output_protein_filename, sep="\t", index_label="Protein")
