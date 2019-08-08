@@ -21,7 +21,7 @@ for i, r in df_fdr[df_fdr["Decoy"] == False].iterrows():
     # Iterate through columns from where the sample value starts in both dataframes (column 3 for peptide, column 5 for fdr)
     for n in range(4, fdr_columns):
         # If fdr value is greater than threshold, replace with np.nan (blank)
-        if r[df_fdr.columns[n]] > 0.01:
+        if r[df_fdr.columns[n]] > fdr_threshold:
             df_peptides.at[i, df_peptides.columns[n - 2]] = np.nan
 
 # Write out to tabulated format.
