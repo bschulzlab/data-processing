@@ -2,7 +2,7 @@ import svgwrite as sw
 # Require the python package svgwrite
 # Input sequence here for graphic generation
 sequence = "TTLTNLTTLESIK"
-output_filename = "test.svg"
+output_filename = "TTLTNLTTLESIK.svg"
 
 def draw_aa(group, canvas, aa, x_pos, y_pos, font_size=10, font_style="normal", font_family="Courier"):
     # Function for drawing amino acid letter
@@ -16,9 +16,11 @@ def draw_divider(group, canvas, points, fill="none", stroke="black"):
 
 
 def draw_transition_label(group, canvas, transition, number, pos_x, pos_y, font_size=6, subscript_font_size=3,
-                          font_style="italic", font_family="Helvetica"):
+                          font_style="normal", font_family="Helvetica"):
     # Function for drawing transition label
-    label_group = group.add(canvas.g(fill="black", font_style=font_style, font_size=font_size, font_family=font_family))
+    label_group = group.add(canvas.g(fill="black",
+                                     font_style=font_style,
+                                     font_size=font_size, font_family=font_family))
     transition = label_group.add(canvas.text(transition, insert=(pos_x, pos_y)))
     transition.add(canvas.tspan(number, baseline_shift="sub", font_size=subscript_font_size))
 
