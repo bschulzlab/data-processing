@@ -30,7 +30,11 @@ to_replace_df = pd.read_excel(to_replace)
 
 
 for i, r in to_replace_df.iterrows():
-    to_replace_df.at[i, "Area"] = source_df.loc[r["First Scan"]]["Area"]
+    try:
+        to_replace_df.at[i, "Area"] = source_df.loc[r["First Scan"]]["Area"]
+    except:
+        print(r["First Scan"] + " does not exist in source file")
+    
 
 
 # In[5]:
