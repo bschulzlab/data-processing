@@ -14,7 +14,7 @@ df = pd.read_csv(gostats_result, sep="\t")
 for ont, d in df.groupby("Ontology"):
     d = d.sort_values("Pvalue")
     for m in methods:
-        r, p_corrected, als, alb = multipletests(d["Pvalue"].values, p_threshold, is_sorted=True, method="bonferroni")
+        r, p_corrected, als, alb = multipletests(d["Pvalue"].values, p_threshold, is_sorted=True, method=m)
         d["Pvalue_"+m] = p_corrected
     results.append(d)
 results = pd.concat(results)
