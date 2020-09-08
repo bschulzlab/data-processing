@@ -4,7 +4,7 @@ import pandas as pd
 peptide_filename = r""
 fdr_filename = r""
 output_protein_filename = r""
-fdr_threshold = 0.05
+fdr_threshold = 0.01
 ###############################
 
 
@@ -30,6 +30,8 @@ fdr_df = pd.read_csv(fdr_filename, sep="\t")
 # Load peptide file with values from protein name, peptide sequence and precursor charge as index
 peptide_df = pd.read_csv(peptide_filename, sep="\t", index_col=[0, 1, 3])
 
+sample_column_order = peptide_df.columns[2:]
+
 # Assuming that sample column order is consistent
 fdr_columns_number = len(fdr_df.columns)
 
@@ -51,7 +53,10 @@ for ind, row in fdr_df.iterrows():
                     temp_protein_dict[column_name][row["Protein"]] = 0
                 # Add value from the protein sample to the value of the value of the same protein in the same sample
                 if (current_row.protein, current_row.peptide, current_row.charge) in peptide_df.index:
-                            sub_df = peptide_df.at[(current_row.protein, current_row.peptide, current_row.charge)]
+                        sub_df = peptide_df.loc[(current_row.protein, current_row.peptide, current_row.charge)]
+                        if type(sub_df) == pd.Series:
+                            temp_protein_dict[column_name][row["Protein"]] += sub_df[column_name]
+                        else:
                             for i2, r2 in sub_df.iterrows():
                                 temp_protein_dict[column_name][row["Protein"]] += r2[column_name]
                 else:
@@ -59,6 +64,7 @@ for ind, row in fdr_df.iterrows():
 
 # Create dataframe from the sample
 proteins = pd.DataFrame(temp_protein_dict)
+proteins = proteins[sample_column_order]
 
 # Write out new protein file
 proteins.to_csv(output_protein_filename, sep="\t", index_label="Protein")
